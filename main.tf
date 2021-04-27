@@ -40,6 +40,7 @@ locals {
           acl_id                    = lookup(obj, "acl_id", lookup(var.advanced_setting, "acl_id", null))
           idle_timeout              = lookup(obj, "idle_timeout", lookup(var.advanced_setting, "idle_timeout", null))
           request_timeout           = lookup(obj, "request_timeout", lookup(var.advanced_setting, "request_timeout", null))
+          listener_forward          = lookup(obj, "listener_forward", lookup(var.advanced_setting, "listener_forward", "off"))
           retrive_slb_ip            = lookup(obj, "retrive_slb_ip", lookup(var.x_forwarded_for, "retrive_slb_ip", false))
           retrive_slb_id            = lookup(obj, "retrive_slb_id", lookup(var.x_forwarded_for, "retrive_slb_id", false))
           retrive_slb_proto         = lookup(obj, "retrive_slb_proto", lookup(var.x_forwarded_for, "retrive_slb_proto", false))
@@ -73,7 +74,7 @@ resource "alicloud_slb_listener" "this" {
   health_check_http_code    = lookup(local.listeners[count.index], "health_check_http_code")
   health_check_type         = lookup(local.listeners[count.index], "health_check_type")
 
-  // Advance setting
+  // Advanced settings
   sticky_session      = lookup(local.listeners[count.index], "sticky_session")
   sticky_session_type = lookup(local.listeners[count.index], "sticky_session_type")
   cookie              = lookup(local.listeners[count.index], "cookie")
@@ -87,6 +88,7 @@ resource "alicloud_slb_listener" "this" {
   acl_id              = lookup(local.listeners[count.index], "acl_id")
   idle_timeout        = lookup(local.listeners[count.index], "idle_timeout")
   request_timeout     = lookup(local.listeners[count.index], "request_timeout")
+  listener_forward    = lookup(local.listeners[count.index], "listener_forward")
 
   // x_forwarded_for setting
   x_forwarded_for {
