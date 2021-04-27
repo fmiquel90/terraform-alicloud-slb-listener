@@ -18,6 +18,7 @@ locals {
           bandwidth                 = lookup(obj, "bandwidth", "-1")
           scheduler                 = lookup(obj, "scheduler", "wrr")
           listener_forward          = lookup(obj, "listener_forward", "off")
+          forward_port              = lookup(obj, "forward_port", "443")
           health_check              = lookup(obj, "health_check", lookup(var.health_check, "health_check", "off"))
           health_check_type         = lookup(obj, "health_check_type", lookup(var.health_check, "health_check_type", null))
           healthy_threshold         = lookup(obj, "healthy_threshold", lookup(var.health_check, "healthy_threshold", 3))
@@ -63,6 +64,7 @@ resource "alicloud_slb_listener" "this" {
   scheduler        = lookup(local.listeners[count.index], "scheduler", "wrr")
   server_group_id  = lookup(local.listeners[count.index], "server_group_id")
   listener_forward = lookup(local.listeners[count.index], "listener_forward")
+  forward_port     = lookup(local.listeners[count.index], "forward_port")
   
   // Health Check
   healthy_threshold         = lookup(local.listeners[count.index], "healthy_threshold")
